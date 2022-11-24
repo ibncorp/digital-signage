@@ -1,0 +1,14 @@
+@import 'styles/variables.scss';
+
+thead > tr > th {
+    cursor: pointer;
+}
+
+.bg-no-overlay {
+    background-repeat: no-repeat !important;
+    background-size: contain !important;
+    background-position: center center !important;
+    color: #fff;
+    height: 150px;
+    padding-top: 50px;
+}

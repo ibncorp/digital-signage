@@ -1,0 +1,33 @@
+ngx-spinner(bdColor = "rgba(0, 0, 0, 0.8)", size = "medium", color = "#fff", type = "ball-spin", [fullScreen] = "true")
+    p(style="color: white") Loading...
+
+sb-layout-auth(style="background: red")
+    .container
+        .row.justify-content-center
+            .col-lg-5
+                .card.shadow-lg.border-0.rounded-lg.mt-5
+                    .card-header
+                        h3.text-center.font-weight-light.my-4 Login
+                    .card-body
+                        form([formGroup]="loginForm", (ngSubmit)="login()")
+                            .form-group
+                                label.small.mb-1(for='email') Email
+                                input#email.form-control.py-4(formControlName='email', type='email', placeholder='Enter email address')
+                                small(*ngIf="loginForm?.get('email')?.errors?.required && loginForm?.get('email')?.touched", style="color:red") Value is required.
+                                small(*ngIf="loginForm?.get('email')?.errors?.email && !loginForm?.get('email')?.errors?.required && loginForm?.get('email')?.touched", style="color:red") Value is invalid.
+                            .form-group
+                                label.small.mb-1(for='password') Password
+                                input#password.form-control.py-4(formControlName='password', type='password', placeholder='Enter password')
+                                small(*ngIf="loginForm?.get('password')?.errors?.required && loginForm?.get('password')?.touched", style="color:red") Value is required.
+                            //.form-group
+                                .custom-control.custom-checkbox
+                                    input#rememberPasswordCheck.custom-control-input(type='checkbox')
+                                    label.custom-control-label(for='rememberPasswordCheck') Remember password
+                            .form-group.d-flex.align-items-center.justify-content-between.mt-4.mb-0
+                                a.small
+                                //a.small(routerLink='/auth/forgot-password') Forgot Password?
+                                //a.btn.btn-primary(routerLink='/dashboard') Login
+                                button.btn.btn-primary(type='submit', [disabled]="!loginForm?.valid") Login
+                    .card-footer.text-center
+                        .small
+                            a(routerLink='/auth/register') Need an account? Sign up!

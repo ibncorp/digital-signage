@@ -1,0 +1,22 @@
+<form>
+    <div class="form-group form-inline">Search: <input class="form-control ml-2" type="text" name="searchTerm" [(ngModel)]="promoService.searchTerm" /><span class="ml-3" *ngIf="promoService.loading$ | async">Loading...</span></div>
+    <div class="container-fluid" *ngFor="let promo_list of promo2D_list">
+        <div class="row pl-2 mb-4" style="background: rgba(0, 0, 0, 0.6); border-radius: 2px"><h5 style="color: white">{{ promo_list[0].device.name }}</h5></div>
+        <div class="row text-center text-lg-start">
+            <div class="col-lg-3 col-md-4 mb-4 col-6" *ngFor="let promo of promo_list">
+                <div class="container bg-no-overlay" style="background: url('{{ apiUrl }}media/download/{{ promo.media.fileName }}');" (mouseenter)="isDisplayOption[promo.id]=true" (mouseleave)="isDisplayOption[promo.id]=false">
+                    <div class="text-center py-2" *ngIf="isDisplayOption[promo.id]" style="background: rgba(0, 0, 0, 0.5); border-radius: 25px"><fa-icon class="mx-2" [icon]='["fas", "eye"]' (click)="preview(promo)"></fa-icon><fa-icon class="mx-2" [icon]='["fas", "edit"]' (click)="edit(promo)"></fa-icon><fa-icon class="mx-2" [icon]='["fas", "trash"]' (click)="delete(promo)"></fa-icon></div>
+                </div>
+                {{ promo.media.displayName }}
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-between p-2">
+        <ngb-pagination [collectionSize]="total$ | async" [(page)]="promoService.page" [pageSize]="promoService.pageSize"></ngb-pagination
+        ><select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="promoService.pageSize">
+            <option [ngValue]="8">8 items per page</option>
+            <option [ngValue]="16">16 items per page</option>
+            <option [ngValue]="32">32 items per page</option>
+        </select>
+    </div>
+</form>

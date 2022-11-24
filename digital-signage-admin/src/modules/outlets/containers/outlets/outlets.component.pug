@@ -1,0 +1,57 @@
+ngx-spinner(bdColor = "rgba(0, 0, 0, 0.8)", size = "medium", color = "#fff", type = "ball-spin", [fullScreen] = "true")
+    p(style="color: white") Loading...
+    
+sb-layout-dashboard
+    sb-dashboard-head(title='Outlets', [hideBreadcrumbs]='false')
+    
+    sb-card
+        .card-header
+            |  {{ title }}
+        .card-body
+            div.col(*ngIf='!isDetail')
+                button.btn.btn-primary.float-right((click)='add()') 
+                    fa-icon([icon]='["fas", "plus"]') 
+                    |  Add Data
+        
+            sb-outlet-list(*ngIf='!isDetail', [pageSize]='6', (onEditEvent)="edit($event)", (onDeleteEvent)="openModal(content, $event)", (onPreviewEvent)="view($event)")
+
+            form([formGroup]="outletForm", (ngSubmit)="save()")
+                div.container(*ngIf='isDetail')
+                    .row.mb-3
+                        .col
+                            button.btn.btn-outline-dark.float-right(style='margin:4px', (click)='back()') 
+                                |  Back
+                            button.btn.btn-primary.float-right(*ngIf="!isReadonly", style='margin:4px', type='submit', [disabled]="!outletForm?.valid") 
+                                fa-icon([icon]='["fas", "save"]') 
+                                |  Save
+                    .row.mb-3
+                        .col                    
+                            label(for='code') Code 
+                            input.form-control(type='text', id='code', name='code', placeholder='Enter Outlet Code', formControlName='code')
+                            small(*ngIf="outletForm?.get('code')?.errors && outletForm?.get('code')?.touched", style="color:red") Value is required.
+                        .col
+                            label(for='name') Name 
+                            input.form-control(type='text', id='name', placeholder='Enter Outlet Name', formControlName='name')
+                            small(*ngIf="outletForm?.get('name')?.errors && outletForm?.get('name')?.touched", style="color:red") Value is required.
+                    .row.mb-3
+                        .col
+                            label(for='address') Address 
+                            input.form-control(type='text', id='address', placeholder='Enter Outlet Address', formControlName='address')
+                            small(*ngIf="outletForm?.get('address')?.errors && outletForm?.get('address')?.touched", style="color:red") Value is required.
+                    .row.mb-5
+                        .col
+                            label(for='region') Region 
+                            input.form-control(type='text', id='region', placeholder='Enter Outlet Region', formControlName='region') 
+                            small(*ngIf="outletForm?.get('region')?.errors && outletForm?.get('region')?.touched", style="color:red") Value is required.   
+
+    ng-template(#content, let-c="close", let-d="dismiss")
+        div.modal-header
+            h4.modal-title Confirmation
+            button.close(type="button", aria-label="Close", (click)="d('Cross click')")
+                span(aria-hidden="true") &times;
+        div.modal-body
+            | Are you sure want to delete this record?
+    
+        div.modal-footer
+            button.btn.btn-primary(type="button", (click)="c(true)") Yes
+            button.btn.btn-outline-dark(type="button", (click)="c(false)") No

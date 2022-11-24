@@ -1,0 +1,37 @@
+form
+    .form-group.form-inline
+        | Search: 
+        input.form-control.ml-2(
+            type='text',
+            name='searchTerm',
+            [(ngModel)]='promoService.searchTerm'
+        )
+        span.ml-3(*ngIf='promoService.loading$ | async') Loading...
+    
+    div.container-fluid(*ngFor="let promo_list of promo2D_list")
+        .row.pl-2.mb-4(style="background:rgba(0, 0, 0, 0.6); border-radius:2px;")
+            h5(style="color:white") {{ promo_list[0].device.name }}
+        .row.text-center.text-lg-start
+            .col-lg-3.col-md-4.mb-4.col-6(*ngFor="let promo of promo_list")
+                div.container.bg-no-overlay(style="background: url('{{ apiUrl }}media/download/{{ promo.media.fileName }}');", (mouseenter)="isDisplayOption[promo.id]=true", (mouseleave)="isDisplayOption[promo.id]=false")
+                    div.text-center.py-2(*ngIf="isDisplayOption[promo.id]", style='background:rgba(0, 0, 0, 0.5);border-radius: 25px')
+                        fa-icon.mx-2([icon]='["fas", "eye"]', (click)="preview(promo)")
+                        fa-icon.mx-2([icon]='["fas", "edit"]', (click)="edit(promo)")
+                        fa-icon.mx-2([icon]='["fas", "trash"]', (click)="delete(promo)")
+                | {{ promo.media.displayName }}
+
+    .d-flex.justify-content-between.p-2
+        ngb-pagination(
+            [collectionSize]='total$ | async',
+            [(page)]='promoService.page',
+            [pageSize]='promoService.pageSize'
+        )
+
+        select.custom-select(
+            style='width: auto',
+            name='pageSize',
+            [(ngModel)]='promoService.pageSize'
+        )
+            option([ngValue]='8') 8 items per page
+            option([ngValue]='16') 16 items per page
+            option([ngValue]='32') 32 items per page

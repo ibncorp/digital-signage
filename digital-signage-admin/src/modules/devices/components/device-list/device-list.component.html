@@ -1,0 +1,33 @@
+<form>
+    <div class="form-group form-inline">Search: <input class="form-control ml-2" type="text" name="searchTerm" [(ngModel)]="deviceService.searchTerm" /><span class="ml-3" *ngIf="deviceService.loading$ | async">Loading...</span></div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col" sbSortable="code" (sort)="onSort($event)"><span>Code</span><sb-sort-icon *ngIf='sortedColumn === "code"' [direction]="sortedDirection"></sb-sort-icon></th>
+                <th scope="col" sbSortable="name" (sort)="onSort($event)"><span>Name</span><sb-sort-icon *ngIf='sortedColumn === "name"' [direction]="sortedDirection"></sb-sort-icon></th>
+                <th scope="col" sbSortable="outlet" (sort)="onSort($event)"><span>Outlet</span><sb-sort-icon *ngIf='sortedColumn === "outlet"' [direction]="sortedDirection"></sb-sort-icon></th>
+                <th scope="col" sbSortable="type" (sort)="onSort($event)"><span>Type</span><sb-sort-icon *ngIf='sortedColumn === "type"' [direction]="sortedDirection"></sb-sort-icon></th>
+                <th scope="col" sbSortable="description" (sort)="onSort($event)"><span>Description</span><sb-sort-icon *ngIf='sortedColumn === "description"' [direction]="sortedDirection"></sb-sort-icon></th>
+                <th><span>Action</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let device of devices$ | async">
+                <td><ngb-highlight [result]="device.code" [term]="deviceService.searchTerm"></ngb-highlight></td>
+                <td><ngb-highlight [result]="device.name" [term]="deviceService.searchTerm"></ngb-highlight></td>
+                <td><ngb-highlight [result]="device.outlet.name" [term]="deviceService.searchTerm"></ngb-highlight></td>
+                <td><span *ngIf="device.type == 1">Menu</span><span *ngIf="device.type == 2">Promo</span><span *ngIf="device.type == 3">Video </span><ngb-highlight hidden [result]="device.type" [term]="deviceService.searchTerm"></ngb-highlight></td>
+                <td><ngb-highlight [result]="device.description" [term]="deviceService.searchTerm"></ngb-highlight></td>
+                <td><fa-icon class="ml-4" [icon]='["fas", "eye"]' (click)="preview(device)"></fa-icon><fa-icon class="ml-4" [icon]='["fas", "edit"]' (click)="edit(device)"></fa-icon><fa-icon class="ml-4" [icon]='["fas", "trash"]' (click)="delete(device)"></fa-icon><ngb-highlight></ngb-highlight></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-between p-2">
+        <ngb-pagination [collectionSize]="total$ | async" [(page)]="deviceService.page" [pageSize]="deviceService.pageSize"></ngb-pagination
+        ><select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="deviceService.pageSize">
+            <option [ngValue]="2">2 items per page</option>
+            <option [ngValue]="4">4 items per page</option>
+            <option [ngValue]="6">6 items per page</option>
+        </select>
+    </div>
+</form>

@@ -1,0 +1,118 @@
+form
+    .form-group.form-inline
+        | Search: 
+        input.form-control.ml-2(
+            type='text',
+            name='searchTerm',
+            [(ngModel)]='deviceService.searchTerm'
+        )
+        span.ml-3(*ngIf='deviceService.loading$ | async') Loading...
+    table.table.table-striped
+        thead
+            tr
+                th(
+                    scope='col',
+                    sbSortable='code',
+                    (sort)='onSort($event)'
+                ) 
+                    span Code
+                    sb-sort-icon(
+                        *ngIf='sortedColumn === "code"',
+                        [direction]='sortedDirection'
+                    )
+                th(
+                    scope='col',
+                    sbSortable='name',
+                    (sort)='onSort($event)'
+                ) 
+                    span Name
+                    sb-sort-icon(
+                        *ngIf='sortedColumn === "name"',
+                        [direction]='sortedDirection'
+                    )
+                th(
+                    scope='col',
+                    sbSortable='outlet',
+                    (sort)='onSort($event)'
+                ) 
+                    span Outlet
+                    sb-sort-icon(
+                        *ngIf='sortedColumn === "outlet"',
+                        [direction]='sortedDirection'
+                    )
+                th(
+                    scope='col',
+                    sbSortable='type',
+                    (sort)='onSort($event)'
+                ) 
+                    span Type
+                    sb-sort-icon(
+                        *ngIf='sortedColumn === "type"',
+                        [direction]='sortedDirection'
+                    )
+                th(
+                    scope='col',
+                    sbSortable='description',
+                    (sort)='onSort($event)'
+                ) 
+                    span Description
+                    sb-sort-icon(
+                        *ngIf='sortedColumn === "description"',
+                        [direction]='sortedDirection'
+                    )
+                th
+                    span Action
+        tbody
+            tr(*ngFor='let device of devices$ | async')
+                td
+                    ngb-highlight(
+                        [result]='device.code',
+                        [term]='deviceService.searchTerm'
+                    )
+                td
+                    ngb-highlight(
+                        [result]='device.name',
+                        [term]='deviceService.searchTerm'
+                    )
+                td
+                    ngb-highlight(
+                        [result]='device.outlet.name',
+                        [term]='deviceService.searchTerm'
+                    )
+                td
+                    span(*ngIf="device.type == 1") Menu
+                    span(*ngIf="device.type == 2") Promo
+                    span(*ngIf="device.type == 3") Video 
+
+                    ngb-highlight(
+                        hidden,
+                        [result]='device.type',
+                        [term]='deviceService.searchTerm'
+                    )
+                td
+                    ngb-highlight(
+                        [result]='device.description',
+                        [term]='deviceService.searchTerm'
+                    )
+                td
+                    fa-icon.ml-4([icon]='["fas", "eye"]', (click)="preview(device)")
+                    fa-icon.ml-4([icon]='["fas", "edit"]', (click)="edit(device)")
+                    fa-icon.ml-4([icon]='["fas", "trash"]', (click)="delete(device)")
+                    
+                    ngb-highlight
+
+    .d-flex.justify-content-between.p-2
+        ngb-pagination(
+            [collectionSize]='total$ | async',
+            [(page)]='deviceService.page',
+            [pageSize]='deviceService.pageSize'
+        )
+
+        select.custom-select(
+            style='width: auto',
+            name='pageSize',
+            [(ngModel)]='deviceService.pageSize'
+        )
+            option([ngValue]='2') 2 items per page
+            option([ngValue]='4') 4 items per page
+            option([ngValue]='6') 6 items per page

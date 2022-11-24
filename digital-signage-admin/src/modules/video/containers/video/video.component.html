@@ -1,0 +1,50 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-spin" [fullScreen]="true"><p style="color: white">Loading...</p></ngx-spinner
+><sb-layout-dashboard
+    ><sb-dashboard-head title="Video Content" [hideBreadcrumbs]="false"></sb-dashboard-head
+    ><sb-card
+        ><div class="card-header">{{ title }}</div>
+        <div class="card-body">
+            <div class="col" *ngIf="!isDetail">
+                <button class="btn btn-primary float-right" (click)="add()"><fa-icon [icon]='["fas", "plus"]'> </fa-icon> Add Data</button>
+            </div>
+            <sb-content-video-list *ngIf="!isDetail" [pageSize]="8" (onEditEvent)="edit($event)" (onDeleteEvent)="openModal(content, $event)" (onPreviewEvent)="view($event)"></sb-content-video-list>
+            <form [formGroup]="videoForm" (ngSubmit)="save()">
+                <div class="container" *ngIf="isDetail">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <button class="btn btn-outline-dark float-right" style="margin: 4px" (click)="back()">Back</button><button class="btn btn-primary float-right" *ngIf="!isReadonly" style="margin: 4px" type="submit" [disabled]="!videoForm?.valid"><fa-icon [icon]='["fas", "save"]'> </fa-icon> Save</button>
+                        </div>
+                    </div>
+                    <div class="row mb-3 d-flex justify-content-center">
+                        <div class="col-md-4 pr-0"><video *ngIf="imageSrc" src="{{  imageSrc }}" height="180" controls></video><video *ngIf="!imageSrc" src="assets/img/picture.png" height="180" controls></video></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="deviceId">Device </label
+                            ><select class="form-control" id="deviceId" formControlName="deviceId">
+                                <option value="">-- Select Device --</option>
+                                <option *ngFor="let device of device_list" value="{{ device.id }}">{{ device.code}} - {{ device.name }}</option></select
+                            ><small *ngIf="videoForm?.get('deviceId')?.errors &amp;&amp; videoForm?.get('deviceId')?.touched" style="color: red">Value is required.</small>
+                        </div>
+                    </div>
+                    <div class="row mb-5">
+                        <div class="col">
+                            <label for="mediaId">Media </label
+                            ><select class="form-control" id="mediaId" formControlName="mediaId" (change)="onMediaSelected()">
+                                <option value="">-- Select Media --</option>
+                                <option *ngFor="let media of picture_list" value="{{ media.id }}">{{ media.displayName}}</option></select
+                            ><small *ngIf="videoForm?.get('mediaId')?.errors &amp;&amp; videoForm?.get('mediaId')?.touched" style="color: red">Value is required.</small>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div></sb-card
+    ><ng-template #content let-c="close" let-d="dismiss"
+        ><div class="modal-header">
+            <h4 class="modal-title">Confirmation</h4>
+            <button class="close" type="button" aria-label="Close" (click)="d('Cross click')"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">Are you sure want to delete this record?</div>
+        <div class="modal-footer"><button class="btn btn-primary" type="button" (click)="c(true)">Yes</button><button class="btn btn-outline-dark" type="button" (click)="c(false)">No</button></div></ng-template
+    ></sb-layout-dashboard
+>

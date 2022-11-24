@@ -1,0 +1,40 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-spin" [fullScreen]="true"><p style="color: white">Loading...</p></ngx-spinner
+><sb-layout-dashboard
+    ><sb-dashboard-head title="Picture" [hideBreadcrumbs]="false"></sb-dashboard-head
+    ><sb-card
+        ><div class="card-header">{{ title }}</div>
+        <div class="card-body">
+            <div class="col" *ngIf="!isDetail">
+                <button class="btn btn-primary float-right" (click)="add()"><fa-icon [icon]='["fas", "plus"]'> </fa-icon> Add Data</button>
+            </div>
+            <sb-picture-list *ngIf="!isDetail" [pageSize]="8" (onEditEvent)="edit($event)" (onDeleteEvent)="openModal(content, $event)" (onPreviewEvent)="view($event)"></sb-picture-list>
+            <form [formGroup]="pictureForm" (ngSubmit)="save()">
+                <div class="container" *ngIf="isDetail">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <button class="btn btn-outline-dark float-right" style="margin: 4px" (click)="back()">Back</button><button class="btn btn-primary float-right" *ngIf="!isReadonly" style="margin: 4px" type="submit" [disabled]="!pictureForm?.valid"><fa-icon [icon]='["fas", "save"]'> </fa-icon> Save</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <input class="file-input" #fileUpload type="file" hidden (change)="onFileSelected($event)" />
+                        <div class="col mb-3 d-flex justify-content-center"><img class="img-fluid img-thumbnail" src="{{ imageSrc }}" onerror="this.src='assets/img/no_image.jpg'" alt="" /></div>
+                    </div>
+                    <div class="row mb-3 d-flex justify-content-center" *ngIf="!isReadonly"><button class="btn btn-primary" type="button" (click)="fileUpload.click()">{{ imageSrc ? 'Change Image' : 'Add Image' }}</button></div>
+                    <div class="row mb-3" *ngIf="!isReadonly">
+                        <div class="col"><label for="name">Name </label><input class="form-control" type="text" id="name" placeholder="Enter Name" formControlName="name" /><small *ngIf="pictureForm?.get('name')?.errors &amp;&amp; pictureForm?.get('name')?.touched" style="color: red">Value is required.</small></div>
+                    </div>
+                    <div class="row mb-5" *ngIf="!isReadonly">
+                        <div class="col"><label for="description">Description </label><input class="form-control" type="text" id="description" placeholder="Enter Description" formControlName="description" /><small *ngIf="pictureForm?.get('description')?.errors &amp;&amp; pictureForm?.get('description')?.touched" style="color: red">Value is required.</small></div>
+                    </div>
+                </div>
+            </form>
+        </div></sb-card
+    ><ng-template #content let-c="close" let-d="dismiss"
+        ><div class="modal-header">
+            <h4 class="modal-title">Confirmation</h4>
+            <button class="close" type="button" aria-label="Close" (click)="d('Cross click')"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">Are you sure want to delete this record?</div>
+        <div class="modal-footer"><button class="btn btn-primary" type="button" (click)="c(true)">Yes</button><button class="btn btn-outline-dark" type="button" (click)="c(false)">No</button></div></ng-template
+    ></sb-layout-dashboard
+>

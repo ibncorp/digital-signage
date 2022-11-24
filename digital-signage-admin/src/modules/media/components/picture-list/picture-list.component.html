@@ -1,0 +1,21 @@
+<form>
+    <div class="form-group form-inline">Search: <input class="form-control ml-2" type="text" name="searchTerm" [(ngModel)]="pictureService.searchTerm" /><span class="ml-3" *ngIf="pictureService.loading$ | async">Loading...</span></div>
+    <div class="container">
+        <div class="row text-center text-lg-start">
+            <div class="col-lg-3 col-md-4 mb-4 col-6" *ngFor="let picture of picture_list$ | async">
+                <div class="container bg-no-overlay" style="background: url('{{ apiUrl }}media/download/{{ picture.fileName }}');" (mouseenter)="isDisplayOption[picture.id]=true" (mouseleave)="isDisplayOption[picture.id]=false">
+                    <div class="text-center py-2" *ngIf="isDisplayOption[picture.id]" style="background: rgba(0, 0, 0, 0.5); border-radius: 25px"><fa-icon class="mx-2" [icon]='["fas", "eye"]' (click)="preview(picture)"></fa-icon><fa-icon class="mx-2" [icon]='["fas", "edit"]' (click)="edit(picture)"></fa-icon><fa-icon class="mx-2" [icon]='["fas", "trash"]' (click)="delete(picture)"></fa-icon></div>
+                </div>
+                {{ picture.displayName }}
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-between p-2">
+        <ngb-pagination [collectionSize]="total$ | async" [(page)]="pictureService.page" [pageSize]="pictureService.pageSize"></ngb-pagination
+        ><select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="pictureService.pageSize">
+            <option [ngValue]="8">8 items per page</option>
+            <option [ngValue]="16">16 items per page</option>
+            <option [ngValue]="32">32 items per page</option>
+        </select>
+    </div>
+</form>

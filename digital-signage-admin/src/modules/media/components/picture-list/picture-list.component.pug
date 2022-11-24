@@ -1,0 +1,35 @@
+form
+    .form-group.form-inline
+        | Search: 
+        input.form-control.ml-2(
+            type='text',
+            name='searchTerm',
+            [(ngModel)]='pictureService.searchTerm'
+        )
+        span.ml-3(*ngIf='pictureService.loading$ | async') Loading...
+    
+    div.container
+        .row.text-center.text-lg-start
+            .col-lg-3.col-md-4.mb-4.col-6(*ngFor="let picture of picture_list$ | async")
+                div.container.bg-no-overlay(style="background: url('{{ apiUrl }}media/download/{{ picture.fileName }}');", (mouseenter)="isDisplayOption[picture.id]=true", (mouseleave)="isDisplayOption[picture.id]=false")
+                    div.text-center.py-2(*ngIf="isDisplayOption[picture.id]", style='background:rgba(0, 0, 0, 0.5);border-radius: 25px')
+                        fa-icon.mx-2([icon]='["fas", "eye"]', (click)="preview(picture)")
+                        fa-icon.mx-2([icon]='["fas", "edit"]', (click)="edit(picture)")
+                        fa-icon.mx-2([icon]='["fas", "trash"]', (click)="delete(picture)")
+                | {{ picture.displayName }}
+                        
+    .d-flex.justify-content-between.p-2
+        ngb-pagination(
+            [collectionSize]='total$ | async',
+            [(page)]='pictureService.page',
+            [pageSize]='pictureService.pageSize'
+        )
+
+        select.custom-select(
+            style='width: auto',
+            name='pageSize',
+            [(ngModel)]='pictureService.pageSize'
+        )
+            option([ngValue]='8') 8 items per page
+            option([ngValue]='16') 16 items per page
+            option([ngValue]='32') 32 items per page

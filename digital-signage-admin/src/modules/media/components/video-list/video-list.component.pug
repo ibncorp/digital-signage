@@ -1,0 +1,35 @@
+form
+    .form-group.form-inline
+        | Search: 
+        input.form-control.ml-2(
+            type='text',
+            name='searchTerm',
+            [(ngModel)]='videoService.searchTerm'
+        )
+        span.ml-3(*ngIf='videoService.loading$ | async') Loading...
+    
+    div.container
+        .row.text-center.text-lg-start
+            .col-lg-3.col-md-4.mb-4.col-6(*ngFor="let video of video_list$ | async", (mouseenter)="isDisplayOption[video.id]=true", (mouseleave)="isDisplayOption[video.id]=false")
+                video(*ngIf="isDisplayOption[video.id]", src='{{ apiUrl }}media/download/{{ video.fileName }}', height="160", width="240", controls, autoplay, muted)
+                video(*ngIf="!isDisplayOption[video.id]", src='{{ apiUrl }}media/download/{{ video.fileName }}', height="160", width="240")
+                div.text-center.py-2(style='height:64px') {{ video.displayName }} 
+                    fa-icon.mx-2(*ngIf="isDisplayOption[video.id]", [icon]='["fas", "eye"]', (click)="preview(video)")
+                    fa-icon.mx-2(*ngIf="isDisplayOption[video.id]", [icon]='["fas", "edit"]', (click)="edit(video)")
+                    fa-icon.mx-2(*ngIf="isDisplayOption[video.id]", [icon]='["fas", "trash"]', (click)="delete(video)")
+                        
+    .d-flex.justify-content-between.p-2
+        ngb-pagination(
+            [collectionSize]='total$ | async',
+            [(page)]='videoService.page',
+            [pageSize]='videoService.pageSize'
+        )
+
+        select.custom-select(
+            style='width: auto',
+            name='pageSize',
+            [(ngModel)]='videoService.pageSize'
+        )
+            option([ngValue]='8') 8 items per page
+            option([ngValue]='16') 16 items per page
+            option([ngValue]='32') 32 items per page

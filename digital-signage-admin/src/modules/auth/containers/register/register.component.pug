@@ -1,0 +1,54 @@
+ngx-spinner(bdColor = "rgba(0, 0, 0, 0.8)", size = "medium", color = "#fff", type = "ball-spin", [fullScreen] = "true")
+    p(style="color: white") Loading...
+    
+sb-layout-auth
+    .container
+        .row.justify-content-center
+            .col-lg-7
+                .card.shadow-lg.border-0.rounded-lg.mt-5
+                    .card-header
+                        h3.text-center.font-weight-light.my-4 Create Account
+                    .card-body
+                        form([formGroup]="registForm", (ngSubmit)="register()")
+                            .form-row
+                                .col-md-6
+                                    .form-group
+                                        label.small.mb-1(for='firstname') First Name
+                                        input#firstname.form-control.py-4(formControlName='firstname', type='text', placeholder='Enter first name')
+                                        small(*ngIf="registForm?.get('firstname')?.errors && registForm?.get('firstname')?.touched", style="color:red") Value is required.
+                                .col-md-6
+                                    .form-group
+                                        label.small.mb-1(for='lastname') Last Name
+                                        input#lastname.form-control.py-4(formControlName='lastname', type='text', placeholder='Enter last name')
+                                        small(*ngIf="registForm?.get('lastname')?.errors && registForm?.get('lastname')?.touched", style="color:red") Value is required.
+                            .form-row
+                                .col-md-6
+                                    .form-group
+                                        label.small.mb-1(for='username') Username
+                                        input#username.form-control.py-4(formControlName='username', type='text', placeholder='Enter username')
+                                        small(*ngIf="registForm?.get('username')?.errors && registForm?.get('username')?.touched", style="color:red") Value is required.
+                                .col-md-6
+                                    .form-group
+                                        label.small.mb-1(for='email') Email
+                                        input#email.form-control.py-4(formControlName='email', type='email', aria-describedby='emailHelp', placeholder='Enter email address')
+                                        small(*ngIf="registForm?.get('email')?.errors?.required && registForm?.get('email')?.touched", style="color:red") Value is required.
+                                        small(*ngIf="registForm?.get('email')?.errors?.email && registForm?.get('email')?.touched", style="color:red") Value is invalid.
+                            .form-row
+                                .col-md-6
+                                    .form-group
+                                        label.small.mb-1(for='password') Password
+                                        input#password.form-control.py-4(formControlName='password', type='password', placeholder='Enter password')
+                                        small(*ngIf="registForm?.get('password')?.errors?.required && registForm?.get('password')?.touched", style="color:red") Value is required.
+                                        small(*ngIf="registForm?.get('password')?.errors?.minlength && registForm?.get('password')?.touched", style="color:red") Min length 8.
+                                .col-md-6
+                                    .form-group
+                                        label.small.mb-1(for='confirmPassword') Confirm Password
+                                        input#confirmPassword.form-control.py-4(formControlName='confirmPassword', type='password', placeholder='Confirm password')
+                                        small(*ngIf="registForm?.get('confirmPassword')?.errors?.required && registForm?.get('confirmPassword')?.touched", style="color:red") Value is required.
+                                        small(*ngIf="registForm?.errors?.mismatch && !registForm?.get('confirmPassword')?.errors?.required && registForm?.get('confirmPassword')?.touched", style="color:red") Must match with password.
+                            .form-group.mt-4.mb-0.d-flex.flex-row-reverse
+                                button.btn.btn-primary(type='submit', [disabled]="!registForm?.valid") Create Account
+                                //button.btn.btn-primary(type='submit') Create Account
+                    .card-footer.text-center
+                        .small
+                            a(routerLink='/auth/login') Have an account? Go to login

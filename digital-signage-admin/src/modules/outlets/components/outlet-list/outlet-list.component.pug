@@ -1,0 +1,100 @@
+form
+    .form-group.form-inline
+        | Search: 
+        input.form-control.ml-2(
+            type='text',
+            name='searchTerm',
+            [(ngModel)]='outletService.searchTerm'
+        )
+        span.ml-3(*ngIf='outletService.loading$ | async') Loading...
+
+    table.table.table-striped
+        thead
+            tr
+                th(
+                    scope='col',
+                    sbSortable='code',
+                    (sort)='onSort($event)'
+                ) 
+                    span Code
+                    sb-sort-icon(
+                        *ngIf='sortedColumn === "code"',
+                        [direction]='sortedDirection'
+                    )
+                th(
+                    scope='col',
+                    sbSortable='name',
+                    (sort)='onSort($event)'
+                ) 
+                    span Name
+                    sb-sort-icon(
+                        *ngIf='sortedColumn === "name"',
+                        [direction]='sortedDirection'
+                    )
+                th(
+                    scope='col',
+                    sbSortable='address',
+                    (sort)='onSort($event)'
+                ) 
+                    span Address
+                    sb-sort-icon(
+                        *ngIf='sortedColumn === "address"',
+                        [direction]='sortedDirection'
+                    )
+                th(
+                    scope='col',
+                    sbSortable='region',
+                    (sort)='onSort($event)'
+                ) 
+                    span Region
+                    sb-sort-icon(
+                        *ngIf='sortedColumn === "region"',
+                        [direction]='sortedDirection'
+                    )
+
+                th
+                    span Action
+        tbody
+            tr(*ngFor='let outlet of outlets$ | async')
+                td
+                    ngb-highlight(
+                        [result]='outlet.code',
+                        [term]='outletService.searchTerm'
+                    )
+                td
+                    ngb-highlight(
+                        [result]='outlet.name',
+                        [term]='outletService.searchTerm'
+                    )
+                td(style="max-width:240px")
+                    ngb-highlight(
+                        [result]='outlet.address',
+                        [term]='outletService.searchTerm'
+                    )
+                td
+                    ngb-highlight(
+                        [result]='outlet.region',
+                        [term]='outletService.searchTerm'
+                    )
+                td
+                    fa-icon.ml-4([icon]='["fas", "eye"]', (click)="preview(outlet)")
+                    fa-icon.ml-4([icon]='["fas", "edit"]', (click)="edit(outlet)")
+                    fa-icon.ml-4([icon]='["fas", "trash"]', (click)="delete(outlet)")
+                    
+                    ngb-highlight
+                         
+    .d-flex.justify-content-between.p-2
+        ngb-pagination(
+            [collectionSize]='total$ | async',
+            [(page)]='outletService.page',
+            [pageSize]='outletService.pageSize'
+        )
+
+        select.custom-select(
+            style='width: auto',
+            name='pageSize',
+            [(ngModel)]='outletService.pageSize'
+        )
+            option([ngValue]='2') 2 items per page
+            option([ngValue]='4') 4 items per page
+            option([ngValue]='6') 6 items per page

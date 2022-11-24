@@ -1,0 +1,37 @@
+form
+    .form-group.form-inline
+        | Search: 
+        input.form-control.ml-2(
+            type='text',
+            name='searchTerm',
+            [(ngModel)]='contentVideoService.searchTerm'
+        )
+        span.ml-3(*ngIf='contentVideoService.loading$ | async') Loading...
+
+    div.container-fluid(*ngFor="let video_list of video2D_list")
+        .row.pl-2.mb-4(style="background:rgba(0, 0, 0, 0.6); border-radius:2px;")
+            h5(style="color:white") {{ video_list[0].device.name }}
+        .row.text-center.text-lg-start
+            .col-lg-3.col-md-4.mb-4.col-6(*ngFor="let video of video_list", (mouseenter)="isDisplayOption[video.id]=true", (mouseleave)="isDisplayOption[video.id]=false")
+                video(*ngIf="isDisplayOption[video.id]", src='{{ apiUrl }}media/download/{{ video.media.fileName }}', height="160", width="240", controls, autoplay, muted)
+                video(*ngIf="!isDisplayOption[video.id]", src='{{ apiUrl }}media/download/{{ video.media.fileName }}', height="160", width="240")
+                div.text-center.py-2(style='height:64px') {{ video.media.displayName }} 
+                    fa-icon.mx-2(*ngIf="isDisplayOption[video.id]", [icon]='["fas", "eye"]', (click)="preview(video)")
+                    fa-icon.mx-2(*ngIf="isDisplayOption[video.id]", [icon]='["fas", "edit"]', (click)="edit(video)")
+                    fa-icon.mx-2(*ngIf="isDisplayOption[video.id]", [icon]='["fas", "trash"]', (click)="delete(video)")
+    
+    .d-flex.justify-content-between.p-2
+        ngb-pagination(
+            [collectionSize]='total$ | async',
+            [(page)]='contentVideoService.page',
+            [pageSize]='contentVideoService.pageSize'
+        )
+
+        select.custom-select(
+            style='width: auto',
+            name='pageSize',
+            [(ngModel)]='contentVideoService.pageSize'
+        )
+            option([ngValue]='8') 8 items per page
+            option([ngValue]='16') 16 items per page
+            option([ngValue]='32') 32 items per page

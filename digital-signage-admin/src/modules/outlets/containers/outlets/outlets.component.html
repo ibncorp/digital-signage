@@ -1,0 +1,39 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-spin" [fullScreen]="true"><p style="color: white">Loading...</p></ngx-spinner
+><sb-layout-dashboard
+    ><sb-dashboard-head title="Outlets" [hideBreadcrumbs]="false"></sb-dashboard-head
+    ><sb-card
+        ><div class="card-header">{{ title }}</div>
+        <div class="card-body">
+            <div class="col" *ngIf="!isDetail">
+                <button class="btn btn-primary float-right" (click)="add()"><fa-icon [icon]='["fas", "plus"]'> </fa-icon> Add Data</button>
+            </div>
+            <sb-outlet-list *ngIf="!isDetail" [pageSize]="6" (onEditEvent)="edit($event)" (onDeleteEvent)="openModal(content, $event)" (onPreviewEvent)="view($event)"></sb-outlet-list>
+            <form [formGroup]="outletForm" (ngSubmit)="save()">
+                <div class="container" *ngIf="isDetail">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <button class="btn btn-outline-dark float-right" style="margin: 4px" (click)="back()">Back</button><button class="btn btn-primary float-right" *ngIf="!isReadonly" style="margin: 4px" type="submit" [disabled]="!outletForm?.valid"><fa-icon [icon]='["fas", "save"]'> </fa-icon> Save</button>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col"><label for="code">Code </label><input class="form-control" type="text" id="code" name="code" placeholder="Enter Outlet Code" formControlName="code" /><small *ngIf="outletForm?.get('code')?.errors &amp;&amp; outletForm?.get('code')?.touched" style="color: red">Value is required.</small></div>
+                        <div class="col"><label for="name">Name </label><input class="form-control" type="text" id="name" placeholder="Enter Outlet Name" formControlName="name" /><small *ngIf="outletForm?.get('name')?.errors &amp;&amp; outletForm?.get('name')?.touched" style="color: red">Value is required.</small></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col"><label for="address">Address </label><input class="form-control" type="text" id="address" placeholder="Enter Outlet Address" formControlName="address" /><small *ngIf="outletForm?.get('address')?.errors &amp;&amp; outletForm?.get('address')?.touched" style="color: red">Value is required.</small></div>
+                    </div>
+                    <div class="row mb-5">
+                        <div class="col"><label for="region">Region </label><input class="form-control" type="text" id="region" placeholder="Enter Outlet Region" formControlName="region" /><small *ngIf="outletForm?.get('region')?.errors &amp;&amp; outletForm?.get('region')?.touched" style="color: red">Value is required. </small></div>
+                    </div>
+                </div>
+            </form>
+        </div></sb-card
+    ><ng-template #content let-c="close" let-d="dismiss"
+        ><div class="modal-header">
+            <h4 class="modal-title">Confirmation</h4>
+            <button class="close" type="button" aria-label="Close" (click)="d('Cross click')"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">Are you sure want to delete this record?</div>
+        <div class="modal-footer"><button class="btn btn-primary" type="button" (click)="c(true)">Yes</button><button class="btn btn-outline-dark" type="button" (click)="c(false)">No</button></div></ng-template
+    ></sb-layout-dashboard
+>

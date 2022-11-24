@@ -1,0 +1,31 @@
+<form>
+    <div class="form-group form-inline">Search: <input class="form-control ml-2" type="text" name="searchTerm" [(ngModel)]="outletService.searchTerm" /><span class="ml-3" *ngIf="outletService.loading$ | async">Loading...</span></div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col" sbSortable="code" (sort)="onSort($event)"><span>Code</span><sb-sort-icon *ngIf='sortedColumn === "code"' [direction]="sortedDirection"></sb-sort-icon></th>
+                <th scope="col" sbSortable="name" (sort)="onSort($event)"><span>Name</span><sb-sort-icon *ngIf='sortedColumn === "name"' [direction]="sortedDirection"></sb-sort-icon></th>
+                <th scope="col" sbSortable="address" (sort)="onSort($event)"><span>Address</span><sb-sort-icon *ngIf='sortedColumn === "address"' [direction]="sortedDirection"></sb-sort-icon></th>
+                <th scope="col" sbSortable="region" (sort)="onSort($event)"><span>Region</span><sb-sort-icon *ngIf='sortedColumn === "region"' [direction]="sortedDirection"></sb-sort-icon></th>
+                <th><span>Action</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let outlet of outlets$ | async">
+                <td><ngb-highlight [result]="outlet.code" [term]="outletService.searchTerm"></ngb-highlight></td>
+                <td><ngb-highlight [result]="outlet.name" [term]="outletService.searchTerm"></ngb-highlight></td>
+                <td style="max-width: 240px"><ngb-highlight [result]="outlet.address" [term]="outletService.searchTerm"></ngb-highlight></td>
+                <td><ngb-highlight [result]="outlet.region" [term]="outletService.searchTerm"></ngb-highlight></td>
+                <td><fa-icon class="ml-4" [icon]='["fas", "eye"]' (click)="preview(outlet)"></fa-icon><fa-icon class="ml-4" [icon]='["fas", "edit"]' (click)="edit(outlet)"></fa-icon><fa-icon class="ml-4" [icon]='["fas", "trash"]' (click)="delete(outlet)"></fa-icon><ngb-highlight></ngb-highlight></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-between p-2">
+        <ngb-pagination [collectionSize]="total$ | async" [(page)]="outletService.page" [pageSize]="outletService.pageSize"></ngb-pagination
+        ><select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="outletService.pageSize">
+            <option [ngValue]="2">2 items per page</option>
+            <option [ngValue]="4">4 items per page</option>
+            <option [ngValue]="6">6 items per page</option>
+        </select>
+    </div>
+</form>

@@ -1,0 +1,122 @@
+h4 Contents
+.row
+    .col-xl-4.col-md-8
+        sb-card-view-details(
+            link='/content-menu',
+            background='bg-dark'
+        )
+            .card-body 
+                .div.row 
+                    .col-7 
+                        | Active Menu
+                    .col-5.text-right 
+                        h3 {{ activeMenuContent }}
+                .div.row 
+                    .col-7 
+                        | Total Menu
+                    .col-5.text-right 
+                        h3 {{ totalMenuContent }}
+
+    .col-xl-4.col-md-8
+        sb-card-view-details(
+            link='/content-promo',
+            background='bg-dark'
+        )
+            .card-body 
+                .div.row 
+                    .col-7
+                        | Active Promo
+                    .col-5.text-right
+                        h3 {{ activePromoContent }}
+                .div.row 
+                    .col-7 
+                        | Total Promo
+                    .col-5.text-right 
+                        h3 {{ totalPromoContent }}
+
+    .col-xl-4.col-md-8
+        sb-card-view-details(
+            link='/content-video',
+            background='bg-dark'
+        )
+            .card-body 
+                .div.row 
+                    .col-7
+                        | Active Video
+                    .col-5.text-right
+                        h3 {{ activeVideoContent }}
+                .div.row 
+                    .col-7 
+                        | Total Video
+                    .col-5.text-right 
+                        h3 {{ totalVideoContent }}
+
+h4 Master Data
+.row
+    .col-xl-3.col-md-6
+        sb-card-view-details(
+            link='/devices',
+            background='bg-primary'
+        )
+            .card-body 
+                .div.row 
+                    .col-7 
+                        | Active Device
+                    .col-5.text-right 
+                        h3 {{ activeDevice }}
+                .div.row 
+                    .col-7 
+                        | Total Device
+                    .col-5.text-right 
+                        h3 {{ totalDevice }}
+
+    .col-xl-3.col-md-6
+        sb-card-view-details(
+            link='/outlets',
+            background='bg-warning'
+        )
+            .card-body 
+                .div.row 
+                    .col-7
+                        | Active Outlet
+                    .col-5.text-right
+                        h3 {{ activeOutlet }}
+                .div.row 
+                    .col-7 
+                        | Total Outlet
+                    .col-5.text-right 
+                        h3 {{ totalOutlet }}
+
+    .col-xl-3.col-md-6
+        sb-card-view-details(
+            link='/media/pictures',
+            background='bg-success'
+        )
+            .card-body 
+                .div.row 
+                    .col-7
+                        | Active Picture
+                    .col-5.text-right
+                        h3 {{ activePicture }}
+                .div.row 
+                    .col-7 
+                        | Total Picture
+                    .col-5.text-right 
+                        h3 {{ totalPicture }}
+
+    .col-xl-3.col-md-6
+        sb-card-view-details(
+            link='/media/videos',
+            background='bg-danger'
+        )
+            .card-body 
+                .div.row 
+                    .col-7
+                        | Active Video
+                    .col-5.text-right
+                        h3 {{ activeVideo }}
+                .div.row 
+                    .col-7 
+                        | Total Video
+                    .col-5.text-right 
+                        h3 {{ totalVideo }} 

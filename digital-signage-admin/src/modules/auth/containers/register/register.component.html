@@ -1,0 +1,47 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-spin" [fullScreen]="true"><p style="color: white">Loading...</p></ngx-spinner
+><sb-layout-auth
+    ><div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <div class="card shadow-lg border-0 rounded-lg mt-5">
+                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Create Account</h3></div>
+                    <div class="card-body">
+                        <form [formGroup]="registForm" (ngSubmit)="register()">
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="form-group"><label class="small mb-1" for="firstname">First Name</label><input class="form-control py-4" id="firstname" formControlName="firstname" type="text" placeholder="Enter first name" /><small *ngIf="registForm?.get('firstname')?.errors &amp;&amp; registForm?.get('firstname')?.touched" style="color: red">Value is required.</small></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group"><label class="small mb-1" for="lastname">Last Name</label><input class="form-control py-4" id="lastname" formControlName="lastname" type="text" placeholder="Enter last name" /><small *ngIf="registForm?.get('lastname')?.errors &amp;&amp; registForm?.get('lastname')?.touched" style="color: red">Value is required.</small></div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="form-group"><label class="small mb-1" for="username">Username</label><input class="form-control py-4" id="username" formControlName="username" type="text" placeholder="Enter username" /><small *ngIf="registForm?.get('username')?.errors &amp;&amp; registForm?.get('username')?.touched" style="color: red">Value is required.</small></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group"><label class="small mb-1" for="email">Email</label><input class="form-control py-4" id="email" formControlName="email" type="email" aria-describedby="emailHelp" placeholder="Enter email address" /><small *ngIf="registForm?.get('email')?.errors?.required &amp;&amp; registForm?.get('email')?.touched" style="color: red">Value is required.</small><small *ngIf="registForm?.get('email')?.errors?.email &amp;&amp; registForm?.get('email')?.touched" style="color: red">Value is invalid.</small></div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="form-group"><label class="small mb-1" for="password">Password</label><input class="form-control py-4" id="password" formControlName="password" type="password" placeholder="Enter password" /><small *ngIf="registForm?.get('password')?.errors?.required &amp;&amp; registForm?.get('password')?.touched" style="color: red">Value is required.</small><small *ngIf="registForm?.get('password')?.errors?.minlength &amp;&amp; registForm?.get('password')?.touched" style="color: red">Min length 8.</small></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group"><label class="small mb-1" for="confirmPassword">Confirm Password</label><input class="form-control py-4" id="confirmPassword" formControlName="confirmPassword" type="password" placeholder="Confirm password" /><small *ngIf="registForm?.get('confirmPassword')?.errors?.required &amp;&amp; registForm?.get('confirmPassword')?.touched" style="color: red">Value is required.</small><small *ngIf="registForm?.errors?.mismatch &amp;&amp; !registForm?.get('confirmPassword')?.errors?.required &amp;&amp; registForm?.get('confirmPassword')?.touched" style="color: red">Must match with password.</small></div>
+                                </div>
+                            </div>
+                            <div class="form-group mt-4 mb-0 d-flex flex-row-reverse">
+                                <button class="btn btn-primary" type="submit" [disabled]="!registForm?.valid">Create Account</button
+                                ><!--button.btn.btn-primary(type='submit') Create Account-->
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer text-center">
+                        <div class="small"><a routerLink="/auth/login">Have an account? Go to login</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div></sb-layout-auth
+>

@@ -1,0 +1,37 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-spin" [fullScreen]="true"><p style="color: white">Loading...</p></ngx-spinner
+><sb-layout-dashboard
+    ><sb-dashboard-head title="Video" [hideBreadcrumbs]="false"></sb-dashboard-head
+    ><sb-card
+        ><div class="card-header">{{ title }}</div>
+        <div class="card-body">
+            <div class="col" *ngIf="!isDetail">
+                <button class="btn btn-primary float-right" (click)="add()"><fa-icon [icon]='["fas", "plus"]'> </fa-icon> Add Data</button>
+            </div>
+            <sb-video-list *ngIf="!isDetail" [pageSize]="8" (onEditEvent)="edit($event)" (onDeleteEvent)="openModal(content, $event)" (onPreviewEvent)="view($event)"></sb-video-list>
+            <form [formGroup]="videoForm" (ngSubmit)="save()">
+                <div class="container" *ngIf="isDetail">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <button class="btn btn-outline-dark float-right" style="margin: 4px" (click)="back()">Back</button><button class="btn btn-primary float-right" *ngIf="!isReadonly" style="margin: 4px" type="submit" [disabled]="!videoForm?.valid"><fa-icon [icon]='["fas", "save"]'> </fa-icon> Save</button>
+                        </div>
+                    </div>
+                    <div class="row mb-3 d-flex justify-content-center"><input class="file-input" #fileUpload type="file" hidden (change)="onFileSelected($event)" /><video *ngIf="imageSrc" src="{{  imageSrc }}" height="240" controls></video><video *ngIf="!imageSrc" src="assets/img/picture.png" height="240" controls></video></div>
+                    <div class="row mb-3 d-flex justify-content-center"><button class="btn btn-primary" *ngIf="!isReadonly &amp;&amp; !imageSrc" type="button" (click)="fileUpload.click()">Add Video</button><button class="btn btn-primary" *ngIf="!isReadonly &amp;&amp; imageSrc" type="button" (click)="fileUpload.click()">Change Video</button></div>
+                    <div class="row mb-3">
+                        <div class="col"><label for="name">Name </label><input class="form-control" type="text" id="name" placeholder="Enter Name" formControlName="name" /><small *ngIf="videoForm?.get('name')?.errors &amp;&amp; videoForm?.get('name')?.touched" style="color: red">Value is required.</small></div>
+                    </div>
+                    <div class="row mb-5">
+                        <div class="col"><label for="description">Description </label><input class="form-control" type="text" id="description" placeholder="Enter Description" formControlName="description" /><small *ngIf="videoForm?.get('description')?.errors &amp;&amp; videoForm?.get('description')?.touched" style="color: red">Value is required.</small></div>
+                    </div>
+                </div>
+            </form>
+        </div></sb-card
+    ><ng-template #content let-c="close" let-d="dismiss"
+        ><div class="modal-header">
+            <h4 class="modal-title">Confirmation</h4>
+            <button class="close" type="button" aria-label="Close" (click)="d('Cross click')"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">Are you sure want to delete this record?</div>
+        <div class="modal-footer"><button class="btn btn-primary" type="button" (click)="c(true)">Yes</button><button class="btn btn-outline-dark" type="button" (click)="c(false)">No</button></div></ng-template
+    ></sb-layout-dashboard
+>
